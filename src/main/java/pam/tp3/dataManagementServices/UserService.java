@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import pam.tp3.model.User;
 import pam.tp3.repositories.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -12,30 +15,20 @@ public class UserService {
     public UserRepository userRepository;
 
 
-    public String findAllUsers(){
-        StringBuilder bebou = new StringBuilder();
+    public List<User> findAllUsers(){
+       /* StringBuilder bebou = new StringBuilder();
 
         userRepository.findAll().forEach(u ->
-                bebou.append(u.getNom()).append(u.getPrenom()).append("\n"));
+                bebou.append(u.getNom()).append(u.getPrenom()).append("\n"));*/
+        List<User> ls = new ArrayList<>();
+                userRepository.findAll().forEach(ls::add);
 
-        return bebou.toString();
+        return ls;
     }
 
-    public void addUser(String us){
-        String [] uss = parseBody(us);
-
-        User user = new User(uss[0],uss[1]);
+    public void addUser(String nom, String prenom){
+        User user = new User(nom,prenom);
         userRepository.save(user);
-    }
-
-    public String[] parseBody(String s){
-        String[] response = s.split("&");
-
-        response[0] = response[0].replaceAll("nom=", "");
-        response[1] = response[1].replaceAll("prenom=", "");
-        System.out.println(response[0]);
-        System.out.println(response[1]);
-        return  response;
     }
 
 
